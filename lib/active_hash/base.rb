@@ -160,6 +160,8 @@ module ActiveHash
         (@records || []).select do |record|
           options.all? { |col, match|
             case match
+              when Array
+                match.include?(record[col])
               when Range
                 match.include?(record[col])
               else

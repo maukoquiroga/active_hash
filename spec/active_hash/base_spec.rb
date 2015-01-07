@@ -240,6 +240,13 @@ describe ActiveHash, "Base" do
       end.should raise_error(ActiveHash::IdError)
     end
 
+    it "return records in array" do
+      records = Country.where(:id => [1,2])
+      records.length.should == 2
+      records.first.id.should == 1
+      records.last.id.should == 2
+    end
+
     it "return records in range" do
       records = Country.where(:id => 2..3)
       records.length.should == 2
