@@ -245,6 +245,13 @@ describe ActiveHash, "Base" do
         ]
       end.should raise_error(ActiveHash::IdError)
     end
+
+    it "return records in range" do
+      records = Country.where(:id => 2..3)
+      records.length.should == 2
+      records.first.id.should == 2
+      records.last.id.should == 3
+    end
   end
 
   describe ".count" do
