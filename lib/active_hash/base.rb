@@ -150,7 +150,12 @@ module ActiveHash
         end
       end
 
-      def where(options)
+      def where(options=nil,&block)
+        if block_given?
+          return (@records || []).select do |record|
+            record.instance_eval(&block)
+          end
+        end
         return @records if options.nil?
         (@records || []).select do |record|
           options.all? { |col, match|

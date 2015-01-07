@@ -197,12 +197,6 @@ describe ActiveHash, "Base" do
       ]
     end
 
-    it "raises ArgumentError if no conditions are provided" do
-      lambda{
-        Country.where
-      }.should raise_error(ArgumentError)
-    end
-
     it "returns all records when passed nil" do
       Country.where(nil).should == Country.all
     end
@@ -250,6 +244,13 @@ describe ActiveHash, "Base" do
       records = Country.where(:id => 2..3)
       records.length.should == 2
       records.first.id.should == 2
+      records.last.id.should == 3
+    end
+
+    it "return records in block conditions" do
+      records = Country.where{id==1 || name=='Mexico'}
+      records.length.should == 2
+      records.first.id.should == 1
       records.last.id.should == 3
     end
   end
