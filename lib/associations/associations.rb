@@ -97,11 +97,14 @@ module ActiveHash
           klass = options[:class_name].constantize
           primary_key_value = send(options[:primary_key])
           foreign_key = options[:foreign_key].to_sym
+          through = options[:through]
 
           if Object.const_defined?(:ActiveRecord) && ActiveRecord.const_defined?(:Relation) && klass < ActiveRecord::Relation
             klass.where(foreign_key => primary_key_value)
           elsif klass.respond_to?(:scoped)
             klass.scoped(:conditions => {foreign_key => primary_key_value})
+          elsif through
+            klass.joins(through).where(through => {foreign_key => primary_key_value})
           else
             klass.where(foreign_key => primary_key_value)
           end
